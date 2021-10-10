@@ -1,0 +1,24 @@
+export const FETCH_UPCOMING = "FETCH_UPCOMING"
+export const FETCH_POPULAR = "FETCH_POPULAR"
+export const FETCH_NEWGAMES = "FETCH_NEWGAMES"
+
+export const FETCH_SEARCHED = "FETCH_SEARCHED"
+export const CLEAR_SEARCHED = "CLEAR_SEARCHED"
+export const FETCH_GAMESERIES = "FETCH_GAMESERIES"
+export const CLEAR_GAMESERIES = "CLEAR_GAMESERIES"
+
+export const FETCH_DETAIL = "LOADING_DETAIL"
+export const CHANGE_INPUT = "CHANGE_INPUT"
+
+export const ADD_FAVOURITE = "ADD_FAVOURITE"
+export const FETCH_FAVOURITE = "FETCH_FAVOURITE"
+export const DELETE_FAVOURITE = "DELETE_FAVOURITE"
+
+export const START = "_START"
+export const SUCCESS = "_SUCCESS"
+export const FAIL = "_FAIL"
+
+export const TOGGLE_OPEN = "TOGGLE_OPEN"
+export const CLOSE = "CLOSE"
+
+
