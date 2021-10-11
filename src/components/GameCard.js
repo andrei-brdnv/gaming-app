@@ -1,17 +1,21 @@
 import React, { useMemo } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { loadDetail } from "../actions";
 import { smallImage } from "../utils/mediaResize";
 import getPlatformLogo from "../utils/getPlatformLogo";
 import metacriticBorderStyle from "../utils/metacriticBorderStyle";
+import usePrevious from "../utils/usePrevious";
 // Styles
 import styled from "styled-components";
 import GameCardMore, { Container } from "./GameCardMore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const GameCard = ({ name, released, image, id, platforms, genres, rating, metacritic }) => {
     const dispatch = useDispatch()
     const history = useHistory()
+    const { game } = useSelector(store => store.detail)
+    let prev = usePrevious(game.id)
 
     if (history.location.pathname === '/') {
         document.body.style.overflow = 'auto'
@@ -32,7 +36,9 @@ const GameCard = ({ name, released, image, id, platforms, genres, rating, metacr
     }, [metacritic])
 
     const loadDetailHandler = () => {
-        dispatch(loadDetail(id))
+        if (id !== prev) {
+            dispatch(loadDetail(id))
+        }
     }
 
     return (
@@ -71,6 +77,7 @@ export const Card = styled.div`
     height: 30vh;
     object-fit: cover;
     border-radius: 1rem 1rem 0 0;
+    position: relative;
   }
 
   h3 {

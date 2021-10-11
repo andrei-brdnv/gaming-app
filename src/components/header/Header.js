@@ -9,7 +9,6 @@ import { faDove } from "@fortawesome/free-solid-svg-icons";
 // Components
 import HeaderSearch from "./HeaderSearch";
 import HeaderNav from "./HeaderNav";
-import MobileHeader from "./MobileHeader";
 
 const Header = () => {
     const dispatch = useDispatch()
@@ -20,15 +19,14 @@ const Header = () => {
     const handleScroll = debounce(() => {
         // find current scroll position
         const currentScrollPos = window.pageYOffset;
+        const verticalScroll = window.scrollY;
         // set state based on location info
-        setVisible((prevScrollPos > currentScrollPos && prevScrollPos - currentScrollPos > 30));
+        setVisible((prevScrollPos > currentScrollPos && prevScrollPos - currentScrollPos > 30 || verticalScroll === 0));
         // set state to new scroll position
         setPrevScrollPos(currentScrollPos);
 
-        console.log('Desktop handleScroll')
         {open && dispatch(closeItem())}
-
-    }, 150);
+    }, 50);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);

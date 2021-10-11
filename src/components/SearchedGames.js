@@ -68,8 +68,15 @@ const SearchedGames = ({ gameArray, totalPages, currentPage, fetching, fetch, fe
 
 const Title = styled.h2`
   svg {
-    transform: translate(0.5rem, 0.15rem);
-    color: #707070;
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    svg {
+      display: inline;
+      transform: translate(0.5rem, 0.15rem);
+      color: #707070;
+    }
   }
 `
 

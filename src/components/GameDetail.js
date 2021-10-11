@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from "react";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useHistory } from "react-router-dom";
 import getStarsRating from "../utils/getStarsRating";
 import getPlatformLogo from "../utils/getPlatformLogo";
@@ -10,14 +10,19 @@ import ReactHtmlParser from "react-html-parser";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 // Components
 import GameMeta from "./GameMeta";
 import ImagesLightbox from "./ImagesLightbox";
+import {addToFavourite, deleteFavourite} from "../actions";
 
 const GameDetail = () => {
     const [fullDesc, setFullDesc] = useState(false)
+    const dispatch = useDispatch()
+    const { auth } = useSelector(store => store.firebase)
+    const { list } = useSelector(store => store.favourites)
     const { game, screenshot, fetchingDetail, movie } = useSelector(store => store.detail)
-    console.log(movie)
     const history = useHistory()
 
     const exitDetailHandler = (e) => {
@@ -36,6 +41,14 @@ const GameDetail = () => {
         setFullDesc(!fullDesc)
     }
 
+    const addToFavouriteHandler = () => {
+        dispatch(addToFavourite(game.id))
+    }
+
+    const deleteFavHandler = () => {
+        dispatch(deleteFavourite(game.id))
+    }
+
     return (
         <>
             {!fetchingDetail && (
@@ -46,6 +59,16 @@ const GameDetail = () => {
                                 <FontAwesomeIcon icon={faArrowLeft} />
                                 <span>Go back to home page</span>
                             </CloseDetailsButton>
+                            {
+                                auth.uid && list && list.length && list.some(listGame => listGame.id === game.id) &&
+                                <RemoveFromFavouriteButton onClick={deleteFavHandler}>
+                                    <FontAwesomeIcon icon={faHeartSolid} title={"Remove from favourites"}/>
+                                </RemoveFromFavouriteButton> ||
+                                auth.uid &&
+                                <AddToFavouriteButton onClick={addToFavouriteHandler}>
+                                    <FontAwesomeIcon icon={faHeart} title={"Add to favourite"}/>
+                                </AddToFavouriteButton>
+                            }
                             <Info>
                                 <div>
                                     {moment(game.released).format('ll')}
@@ -81,7 +104,7 @@ const GameDetail = () => {
                                 <GameMeta name={"Release Date"} data={game.released} />
                                 <GameMeta name={"Developers"} array={game.developers} />
                                 <GameMeta name={"Publishers"} array={game.publishers} />
-                                <GameMeta name={"Age Rating"} data={game.esrb_rating} width={"100%"} />
+                                <GameMeta name={"Age Rating"} data={game.esrb_rating} />
                                 <GameMeta name={"Tags"} array={game.tags} width={"100%"} />
                                 <GameMeta name={"Website"} data={game.website} width={"100%"} />
                             </GameMetaContainer>
@@ -128,8 +151,28 @@ const CardShadow = styled.div`
   }
 `
 
+const AddToFavouriteButton = styled.div`
+  margin-bottom: 1rem;
+  
+  svg {
+    color: ${props => props.theme.colors.inputFont};
+    font-size: 2rem;
+  }
+`
+
+const RemoveFromFavouriteButton = styled.div`
+  margin-bottom: 1rem;
+  
+  svg {
+    opacity: 0.85;
+    font-size: 2rem;
+    color: #ec407a;
+  }
+`
+
 const Detail = styled.div`
   width: 80%;
+  min-height: 100vh;
   border-radius: 1rem;
   padding: 2rem 5rem;
   background-color: ${props => props.theme.colors.cardBg};
@@ -144,9 +187,9 @@ const Detail = styled.div`
     width: 100%;
   }
   
-  /*@media (max-width: 1200px) {
-    flex-direction: column;
-  }*/
+  @media (max-width: 1024px) {
+    padding: 2rem 2rem;
+  }
 
   @media (max-width: 768px) {
     width: 100%;
@@ -164,7 +207,7 @@ const Stats = styled.div`
 `
 
 const CloseDetailsButton = styled.div`
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   cursor: pointer;
   color: ${props => props.theme.colors.inputFont};
   
@@ -196,6 +239,7 @@ const ContentRight = styled.div`
 
 const Name = styled.h3`
   font-size: 2rem;
+  margin-bottom: 1rem;
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
@@ -209,7 +253,7 @@ const Info = styled.div`
   align-items: center;
   text-transform: uppercase;
   letter-spacing: 0.05rem;
-  margin-bottom: 1rem;
+  //margin-bottom: 1rem;
   color: ${props => props.theme.colors.paragraph};
   
   div {
@@ -238,22 +282,25 @@ const GameMetaContainer = styled.div`
 `
 
 const Description = styled.div`
-  margin: 2rem 0;
+  margin-bottom: 2rem;
   
   div {
     margin-bottom: 0.5rem;
     overflow: hidden;
-    height: ${props => props.fullDesc ? "auto" : "3rem"};
+    height: ${props => props.fullDesc ? "auto" : "4.25rem"};
+    transition: height 0.25s linear;
   }
   
   div p {
     display: -webkit-box;
-    -webkit-line-clamp: ${props => props.fullDesc ? "none" : "2"}; /* number of lines to show */
+    -webkit-line-clamp: ${props => props.fullDesc ? "none" : "3"}; /* number of lines to show */
     -webkit-box-orient: vertical;
     font-size: 1rem;
+    line-height: 1.5rem;
     margin-bottom: 1rem;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: all 0.25s linear;
   }
   
   div p:last-child {
@@ -265,56 +312,19 @@ const Description = styled.div`
     color: ${props => props.theme.colors.paragraph};
   }
   
-  //position: relative;
-
-  /*div {
-    //display: inline-block;
+  div ul {
     font-size: 1rem;
-    //line-height: 1.5rem;
-    margin-bottom: 1rem;
+    line-height: 1.5rem;
     color: ${props => props.theme.colors.paragraph};
-    text-overflow: ellipsis;
-    overflow: hidden;
-    width: 100%;
-    //width: 10rem;
-    //height: 4rem;
-    
   }
   
-  div p {
-    text-overflow: ellipsis;
-    height: 30px;
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    display: inline-block;
-    padding-right: 20px;
+  div ul li {
+    margin-bottom: 1rem;
   }
   
-  div:after {
-    content: 'Read more';
-    position: absolute;
-    right: 0;
-    border: 1px solid black;
-    //background-color: palevioletred;
-  }*/
-
-  /*p {
-    //text-overflow: ellipsis;
-    //width: 400px;
-    height: 55px;
-    overflow: hidden;
-    //white-space: nowrap;
-    position: relative;
-    display: inline-block;
-    padding-right: 120px;
-  }*/
-  
-  /*p:after {
-    content: 'Read more';
-    right: 0;
-    position: absolute;
-  }*/
+  div ul li:last-child {
+    margin: 0;
+  }
   
   span {
     display: inline-flex;
@@ -322,11 +332,11 @@ const Description = styled.div`
     font-weight: 400;
     padding: 0.1rem 0.2rem;
     cursor: pointer;
-    border: 1px solid black;
+    border: 1px solid ${props => props.theme.colors.font};
+    color: ${props => props.theme.colors.font};
     border-radius: 0.25rem;
     align-items: center;
-    //right: 0;
-    //bottom: 0;
+    opacity: 0.85;
   }
   
 `

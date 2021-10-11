@@ -10,6 +10,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 const SideLinks = () => {
     const dispatch = useDispatch()
     const { searched, searchedName } = useSelector(store => store.games)
+    const { auth } = useSelector(store => store.firebase)
 
     const handleClick = (e) => {
         e.preventDefault()
@@ -32,6 +33,10 @@ const SideLinks = () => {
                     <SideLink href="#searched" onClick={handleClick}>Searched</SideLink>
                     <FontAwesomeIcon onClick={clearSearched} icon={faTimes} title={'Delete'}/>
                 </Searched>
+            ) : null}
+
+            {auth.uid ? (
+                <SideLink href="#favourite" onClick={handleClick}>Favourite</SideLink>
             ) : null}
 
             <SideLink href="#upcoming" onClick={handleClick}>Upcoming</SideLink>

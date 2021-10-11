@@ -148,18 +148,18 @@ const FavouriteButton = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 0.25rem;
-  background-color: #bdbdbd;
+  border-radius: 0.5rem;
+  background-color: #BEBEBE;
   padding: 0.75rem 1rem;
   cursor: pointer;
-  color: #333;
+  color: #282828;
   font-weight: 400;
-  font-size: 0.85rem;
-  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
   transition: all .25s ease;
   
   &:hover {
-    opacity: 0.75;
+    color: #F8F8F8;
   }
 `
 

@@ -122,7 +122,7 @@ const Container = styled.div`
   top: 4.75rem;
   width: 15rem;
   max-width: 100%;
-  transform: translateX(-45%);
+  transform: translateX(-42.5%);
   background-color: #F8F8F8;
   border: 1px solid #BEBEBE;
   border-radius: 0.5rem;

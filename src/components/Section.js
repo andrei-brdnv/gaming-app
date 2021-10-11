@@ -58,6 +58,10 @@ export const SectionContainer = styled.section`
     font-weight: 700;
     margin-bottom: 3rem;
   }
+  
+  p {
+    text-align: center;
+  }
 
   @media screen and (max-width: 768px) {
     h2 {

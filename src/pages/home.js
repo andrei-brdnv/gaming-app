@@ -47,8 +47,8 @@ const Home = () => {
     //const { upcoming, popular, newGames } = data.games
     //const { totalPagesUpcoming, totalPagesPopular, totalPagesNewGames, fetchingUpcoming, fetchingPopular, fetchingNewGames, searched, firstLoading, gameSeries, loaded, upcomingCurrentPage, popularCurrentPage, newGamesCurrentPage } = useSelector(store => store.games)
     const { list, fetchFavourite } = useSelector(store => store.favourites)
-    const { auth } = useSelector((store => store.firebase))
-    const { signIn } = useSelector((store => store.auth))
+    const { auth } = useSelector(store => store.firebase)
+    const { signIn } = useSelector(store => store.auth)
 
     /*useFirestoreConnect(['games'])
     const games = useSelector((state => state.firestore.data.games))

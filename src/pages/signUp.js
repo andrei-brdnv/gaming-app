@@ -48,7 +48,7 @@ const SignUp = () => {
 
                 </div>
                 <h4>Create an account</h4>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} autoComplete={"off"}>
                     <div className="input-field">
                         <input
                             type="text"

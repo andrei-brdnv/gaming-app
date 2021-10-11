@@ -17,7 +17,7 @@ const FavouriteGames = ({ gameArray, fetching, fetch, name }) => {
     }, [fetching])
 
     return (
-        <SectionContainer>
+        <SectionContainer id={name}>
             <h2><Text tid={`${name} games`}/></h2>
             {gameArray && gameArray.length ? (
                 <Games>
@@ -35,7 +35,7 @@ const FavouriteGames = ({ gameArray, fetching, fetch, name }) => {
                         />
                     ))}
                 </Games>
-            ) : null}
+            ) : <p>No favourite games to display yet</p>}
         </SectionContainer>
     )
 }

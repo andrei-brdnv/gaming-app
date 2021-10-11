@@ -39,7 +39,7 @@ const SignIn = () => {
 
                 </div>
                 <img src={User} alt="user" />
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} autoComplete={"off"}>
                     <div className="input-field">
                         <input
                             placeholder="Email"
@@ -84,21 +84,21 @@ const SignIn = () => {
     )
 }
 
-const Container = styled.div`
+/*const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100vh;
-  /*position: fixed;
+  /!*position: fixed;
   top: 0;
-  left: 0;*/
+  left: 0;*!/
 
   background: linear-gradient(-45deg, rgba(238, 119, 82, 0.5), rgba(231, 60, 126, 0.5), rgba(35, 166, 213, 0.5), rgba(35, 213, 171, 0.5));
   background-size: 400% 400%;
   animation: Gradient 25s ease infinite;
   overflow: hidden;
-`
+`*/
 
 const StyledSignIn = styled(motion.div)`
   width: 25rem;
@@ -180,10 +180,10 @@ const StyledSignIn = styled(motion.div)`
     outline: none;
     border: 0;
     border-bottom: 1px solid white;
-    //border-radius: 0.5rem;
+    border-radius: 0;
     font-size: 1rem;
     color: whitesmoke;
-    text-decoration-color: whitesmoke;
+    //text-decoration-color: whitesmoke;
     background-color: transparent;
   }
   
@@ -194,6 +194,13 @@ const StyledSignIn = styled(motion.div)`
   input:focus {
     outline: none;
     border-color: cornflowerblue;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    background-color: transparent !important;
   }
   
   .field {
