@@ -7,11 +7,11 @@ import {
     gameScreenshotURL,
     searchGameURL,
     gameMovieURL,
-    gameSeriesURL
+    gameSeriesURL, dynamicSearchURL
 } from "../api";
 import {
     ADD_FAVOURITE, CHANGE_INPUT,
-    CLEAR_SEARCHED, CLOSE, DELETE_FAVOURITE, FAIL, FETCH_DETAIL, FETCH_FAVOURITE,
+    CLEAR_SEARCHED, CLOSE, DELETE_FAVOURITE, FAIL, FETCH_DETAIL, FETCH_DYNAMIC_SEARCH, FETCH_FAVOURITE,
     FETCH_GAMESERIES,
     FETCH_NEWGAMES,
     FETCH_POPULAR,
@@ -23,14 +23,6 @@ import {
     SUCCESS, TOGGLE_OPEN
 } from "../utils/constants";
 import store from "../store";
-
-/*
-export const showLoader = () => (dispatch) => {
-    dispatch({
-        type: SHOW_LOADER
-    })
-}
-*/
 
 export const toggleOpen = () => ({
     type: TOGGLE_OPEN
@@ -111,6 +103,16 @@ export const fetchNewGames = (newGamesCurrentPage) => async (dispatch) => {
         }))
 }
 
+export const fetchDynamicSearch = (game_name) => async (dispatch) => {
+    await axios.get(dynamicSearchURL(game_name))
+        .then(response => dispatch({
+            type: FETCH_DYNAMIC_SEARCH,
+            payload: {
+                dynamicSearched: response.data.results
+            }
+        }))
+}
+
 export const fetchSearched = (game_name, searchedCurrentPage) => async (dispatch) => {
     dispatch({
         type: FETCH_SEARCHED + START
@@ -127,27 +129,6 @@ export const fetchSearched = (game_name, searchedCurrentPage) => async (dispatch
         }))
 }
 
-
-
-
-/*export const loadGames = () => async (dispatch) => {
-    const upcomingData = await axios.get(upcomingGamesURL())
-    const newGamesData = await axios.get(newGamesURL())
-    const popularData = await axios.get(popularGamesURL())
-
-    dispatch({
-        type: FETCH_GAMES,
-        payload: {
-            upcoming: upcomingData.data.results,
-            totalPagesUpcoming: upcomingData.data.count,
-            newGames: newGamesData.data.results,
-            totalPagesNewGames: newGamesData.data.count,
-            popular: popularData.data.results,
-            totalPagesPopular: popularData.data.count,
-        }
-    })
-}*/
-
 export const loadDetail = (id) => async (dispatch) => {
     dispatch({
         type: FETCH_DETAIL + START
@@ -163,19 +144,6 @@ export const loadDetail = (id) => async (dispatch) => {
             game: detailData.data,
             screenshot: screenshotData.data,
             movie: movieData.data,
-        }
-    })
-}
-
-
-
-export const fetchGameSeries = (id) => async (dispatch) => {
-    const gameSeriesData = await axios.get(gameSeriesURL(id))
-
-    dispatch({
-        type: FETCH_GAMESERIES,
-        payload: {
-            gameSeries: gameSeriesData.data.results,
         }
     })
 }

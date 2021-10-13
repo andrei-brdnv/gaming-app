@@ -1,23 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeInput, fetchSearched } from "../../actions";
+import { changeInput, fetchSearched, fetchDynamicSearch } from "../../actions";
 import { useMediaQuery } from "react-responsive";
 // Styles
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { motion, AnimateSharedLayout } from "framer-motion";
+import {logger} from "redux-logger/src";
 
 const HeaderSearch = () => {
     const dispatch = useDispatch()
     const [input, setInput] = useState('')
     const inputRef = useRef(null)
     const [focus, setFocus] = useState(false)
-    let { searched, searchedCurrentPage } = useSelector(store => store.games)
+    let { searched, searchedCurrentPage, dynamicSearched } = useSelector(store => store.games)
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
     const handleInput = (e) => {
         setInput(e.target.value)
+        console.log("INPUT DYNAMIC", input)
     }
 
     const submitSearch = (e) => {
@@ -35,6 +37,12 @@ const HeaderSearch = () => {
     }
 
     useEffect(() => {
+        if (input) {
+            dispatch(fetchDynamicSearch(input))
+        }
+    }, [input])
+
+    useEffect(() => {
         if (searched.length && searchedCurrentPage <= 2) {
             const element = document.querySelector("#searched").offsetTop
             console.log('SCROLL TO TOP SEARCH')
@@ -46,20 +54,33 @@ const HeaderSearch = () => {
     }, [searched.length])
 
     return (
-        <Form onSubmit={submitSearch} focus={focus}>
-            <Input
-                type="text"
-                placeholder={isMobile ? "Search" : "Search more than 500,000 games"}
-                value={input}
-                ref={inputRef}
-                onFocus={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
-                onChange={handleInput}
-                focus={focus}
-            />
-            {input ? <FontAwesomeIcon icon={faTimes} onClick={clearInput}/> : null}
-            <CancelButton focus={focus} /*animate={{x: 0}} initial={{x: 75}} transition={{duration: 0.125}}*/>Cancel</CancelButton>
-        </Form>
+        <>
+            <Form onSubmit={submitSearch} focus={focus}>
+                <Input
+                    type="text"
+                    placeholder={isMobile ? "Search" : "Search more than 500,000 games"}
+                    value={input}
+                    ref={inputRef}
+                    onFocus={() => setFocus(true)}
+                    onBlur={() => setFocus(false)}
+                    onChange={handleInput}
+                    focus={focus}
+                />
+
+                {input ? (
+                    <SearchedList>
+                        {dynamicSearched && dynamicSearched.map(game => (
+                            <li key={game.id}>{game.name}</li>
+                        ))}
+                    </SearchedList>
+                ) : null}
+
+                {input ? <FontAwesomeIcon icon={faTimes} onClick={clearInput}/> : null}
+                <CancelButton focus={focus} /*animate={{x: 0}} initial={{x: 75}} transition={{duration: 0.125}}*/>Cancel</CancelButton>
+            </Form>
+
+        </>
+
     )
 }
 
@@ -97,6 +118,27 @@ const Form = styled.form`
   }
 `
 
+const SearchedList = styled.ul`
+  position: absolute;
+  background-color: ${props => props.theme.colors.cardBg};
+  list-style: none;
+  top: 3rem;
+  left: 0;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  max-height: 20rem;
+  width: 100%;
+  overflow: auto;
+  
+  li {
+    margin-bottom: 1rem;
+  }
+  
+  li:last-child {
+    margin: 0;
+  }
+`
+
 const CancelButton = styled(motion.span)`
   display: none;
   position: absolute;
@@ -124,6 +166,7 @@ const Input = styled(motion.input)`
   border-radius: 1.5rem;
   height: 100%;
   transition: all .25s ease;
+  position: relative;
   
   &:focus,
   &:hover {

@@ -1,13 +1,11 @@
 import {
     FETCH_SEARCHED,
     CLEAR_SEARCHED,
-    FETCH_GAMESERIES,
-    CLEAR_GAMESERIES,
     FETCH_UPCOMING,
     START,
     SUCCESS,
     FETCH_POPULAR,
-    FETCH_NEWGAMES, CHANGE_INPUT
+    FETCH_NEWGAMES, CHANGE_INPUT, FETCH_DYNAMIC_SEARCH
 } from "../utils/constants";
 
 const initState = {
@@ -31,6 +29,8 @@ const initState = {
     fetchingSearched: false,
     totalPagesSearched: 0,
     searchedCurrentPage: 1,
+
+    dynamicSearched: [],
 
     gameSeries: [],
     fetchingGameSeries: false,
@@ -93,6 +93,11 @@ const gamesReducer = (state = initState, action) => {
                 totalPagesSearched: 0,
                 searchedCurrentPage: 1,
             }
+        case FETCH_DYNAMIC_SEARCH:
+            return {
+                ...state,
+                dynamicSearched: payload.dynamicSearched
+            }
         case FETCH_SEARCHED + START:
             return {
                 ...state,
@@ -121,17 +126,6 @@ const gamesReducer = (state = initState, action) => {
                 totalPagesSearched: 0,
                 searchedCurrentPage: 1,
             }
-        case FETCH_GAMESERIES:
-            return {
-                ...state,
-                gameSeries: payload.gameSeries,
-            }
-        case CLEAR_GAMESERIES:
-            return {
-                ...state,
-                gameSeries: [],
-            }
-
         default:
             return {...state}
     }
