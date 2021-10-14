@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchAutocompleteSearch } from "../../reducers/games/ac";
-import { fetchSearched, changeInput } from "../../reducers/games/ac";
+import {closeAutocomplete, openAutocomplete} from "../../reducers/ui/ac";
+import { resetSearched, fetchAutocompleteSearch } from "../../reducers/games/ac";
+import { fetchSearched } from "../../reducers/games/ac";
 import { fetchGameDetail } from "../../reducers/detail/ac";
 import { useMediaQuery } from "react-responsive";
 import usePrevious from "../../utils/usePrevious";
@@ -11,42 +12,37 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+// Components
+import { AutocompleteSearchDropdown } from "./AutocompleteSearchDropdown";
 
 const HeaderSearch = () => {
     const dispatch = useDispatch()
     const [input, setInput] = useState('')
     const inputRef = useRef(null)
     const [focus, setFocus] = useState(false)
-    let { searched, searchedCurrentPage, autocompleteSearch } = useSelector(store => store.games)
-    const { game } = useSelector(store => store.detail)
-    let prev = usePrevious(game.id)
+    const { isOpenSearchAutocomplete } = useSelector(store => store.ui)
+    let { searched, searchedCurrentPage } = useSelector(store => store.games)
 
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
     const handleInput = (e) => {
         setInput(e.target.value)
-        console.log("INPUT DYNAMIC", input)
+        dispatch(openAutocomplete())
     }
 
     const submitSearch = (e) => {
         e.preventDefault()
-        dispatch(changeInput(input))
+        dispatch(closeAutocomplete())
+        dispatch(resetSearched(input))
         dispatch(fetchSearched(input, searchedCurrentPage = 1))
-
         setInput('')
         inputRef.current.blur()
     }
 
     const clearInput = () => {
+        inputRef.current.focus()
         setInput('')
-        {!isMobile && inputRef.current.focus()}
     }
-
-    useEffect(() => {
-        if (input) {
-            dispatch(fetchAutocompleteSearch(input))
-        }
-    }, [input])
 
     useEffect(() => {
         if (searched.length && searchedCurrentPage <= 2) {
@@ -58,12 +54,6 @@ const HeaderSearch = () => {
             })
         }
     }, [searched.length])
-
-    const loadDetailHandler = (id) => {
-        if (id !== prev) {
-            dispatch(fetchGameDetail(id))
-        }
-    }
 
     return (
         <>
@@ -79,16 +69,11 @@ const HeaderSearch = () => {
                     focus={focus}
                 />
 
-                {input ? (
-                    <SearchedList>
-                        {autocompleteSearch && autocompleteSearch.map(game => (
-                            <li key={game.id}>
-                                <Link to={`/game/${game.id}`} onClick={() => loadDetailHandler(game.id)}>
-                                    {game.name}
-                                </Link>
-                            </li>
-                        ))}
-                    </SearchedList>
+                {input && isOpenSearchAutocomplete ? (
+                    <AutocompleteSearchDropdown
+                        input={input}
+                        submitSearch={submitSearch}
+                    />
                 ) : null}
 
                 {input ? <FontAwesomeIcon icon={faTimes} onClick={clearInput}/> : null}
@@ -131,27 +116,6 @@ const Form = styled.form`
       cursor: pointer;
       transition: all 0.25s ease-in;
     }
-  }
-`
-
-const SearchedList = styled.ul`
-  position: absolute;
-  background-color: ${props => props.theme.colors.cardBg};
-  list-style: none;
-  top: 3rem;
-  left: 0;
-  padding: 1.25rem;
-  border-radius: 0.5rem;
-  max-height: 20rem;
-  width: 100%;
-  overflow: auto;
-  
-  li {
-    margin-bottom: 1rem;
-  }
-  
-  li:last-child {
-    margin: 0;
   }
 `
 

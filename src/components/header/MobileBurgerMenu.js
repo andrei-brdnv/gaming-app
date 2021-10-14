@@ -101,7 +101,7 @@ const BurgerMenuHidden = styled.div`
   background-color: #F8F8F8;
   overflow: hidden;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   overscroll-behavior-y: none;
 `
 

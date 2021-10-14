@@ -6,7 +6,7 @@ import {
     SUCCESS,
     FETCH_POPULAR,
     FETCH_NEWGAMES,
-    CHANGE_INPUT,
+    RESET_SEARCHED,
     FETCH_AUTOCOMPLETE_SEARCH
 } from "../../utils/constants";
 
@@ -33,6 +33,7 @@ const initialState = {
     searchedCurrentPage: 1,
 
     autocompleteSearch: [],
+    autocompleteCount: 0,
 
     gameSeries: [],
     fetchingGameSeries: false,
@@ -86,7 +87,7 @@ const gamesReducer = (state = initialState, action) => {
                 fetchingNewGames: false,
                 loaded: true,
             }
-        case CHANGE_INPUT:
+        case RESET_SEARCHED:
             return {
                 ...state,
                 searched: [],
@@ -98,7 +99,8 @@ const gamesReducer = (state = initialState, action) => {
         case FETCH_AUTOCOMPLETE_SEARCH:
             return {
                 ...state,
-                autocompleteSearch: payload.autocompleteSearch
+                autocompleteSearch: payload.autocompleteSearch,
+                autocompleteCount: payload.autocompleteCount,
             }
         case FETCH_SEARCHED + START:
             return {
@@ -106,11 +108,6 @@ const gamesReducer = (state = initialState, action) => {
                 fetchingSearched: true,
             }
         case FETCH_SEARCHED + SUCCESS:
-            /*return {
-                ...state,
-                searched: payload.searched,
-                totalPages: payload.totalPages,
-            }*/
             return {
                 ...state,
                 searched: [...state.searched, ...payload.searched],

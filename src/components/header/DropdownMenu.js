@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { closeItem } from "../../reducers/ui/ac";
+import { closeHeaderDropdown } from "../../reducers/ui/ac";
 import { signOut } from "../../reducers/auth/ac";
 import { AppThemeContext } from "../../context/AppThemeProvider";
 import { AppLangContext } from "../../context/AppLangProvider";
@@ -40,7 +40,7 @@ const DropdownMenu = () => {
 
     const handleLogout = () => {
         dispatch(signOut())
-        dispatch(closeItem())
+        dispatch(closeHeaderDropdown())
     }
 
     const DropdownItem = (props) => {

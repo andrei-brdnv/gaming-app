@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { debounce } from "../../utils/debounce";
+import { useDispatch, useSelector } from "react-redux";
+import { closeMobileSearch, toggleMobileSearch, toggleHeaderDropdown } from "../../reducers/ui/ac";
 // Styles
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,17 +12,18 @@ import HeaderSearch from "./HeaderSearch";
 import MobileBurgerMenu from "./MobileBurgerMenu";
 
 const MobileHeader = () => {
-    const [prevScrollPos, setPrevScrollPos] = useState(0)
-    const [visible, setVisible] = useState(true)
-    const [openSearch, setOpenSearch] = useState(false)
+    const dispatch = useDispatch()
+    //const [prevScrollPos, setPrevScrollPos] = useState(0)
+    //const [visible, setVisible] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
+    const { isOpenMobileSearchInput } = useSelector(store => store.ui)
 
-    const handleScroll = debounce(() => {
+    /*const handleScroll = debounce(() => {
         const currentScrollPos = window.pageYOffset;
 
         setVisible((prevScrollPos > currentScrollPos && prevScrollPos - currentScrollPos > 30));
         setPrevScrollPos(currentScrollPos);
-        setOpenSearch(false)
-    }, 150);
+    }, 150);*/
 
     const scrollToTop = () => {
         window.scrollTo({
@@ -28,26 +31,26 @@ const MobileHeader = () => {
         })
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [prevScrollPos, visible, handleScroll]);
+    }, [prevScrollPos, visible, handleScroll]);*/
 
     return (
-        <Wrapper visible={visible}>
+        <Wrapper>
             <MobileHeaderLayout>
                 <UpperHeader>
                     <MobileLogo onClick={scrollToTop}>
                         <FontAwesomeIcon icon={faDove}/>
                     </MobileLogo>
                     <Right>
-                        <SearchLogo onClick={() => setOpenSearch(!openSearch)}>
+                        <SearchLogo onClick={() => dispatch(toggleMobileSearch())}>
                             <SearchIcon />
                         </SearchLogo>
                         <MobileBurgerMenu />
                     </Right>
                 </UpperHeader>
-                <HeaderSearchWrapper openSearch={openSearch}>
+                <HeaderSearchWrapper openSearch={isOpenMobileSearchInput}>
                     <HeaderSearch />
                 </HeaderSearchWrapper>
             </MobileHeaderLayout>
@@ -99,6 +102,7 @@ const Right = styled.div`
 
 const SearchLogo = styled.div`
   margin-right: 1.25rem;
+  cursor: pointer;
   
   svg {
     width: 2rem;
@@ -112,13 +116,13 @@ const HeaderSearchWrapper = styled.div`
   display: flex;
   align-items: center;
   position: absolute;
-  top: ${props => props.openSearch ? '4rem' : '1rem'};
+  top: ${props => props.openSearch ? '4rem' : '0.5rem'};
   width: 100%;
   background-color: ${props => props.theme.colors.header};
   box-shadow: ${props => props.openSearch ? '0 5px 10px rgba(0, 0, 0, 0.25)' : '0'};
   padding: 0 1rem;
-  height: 3rem;
-  transition: top .25s ease;
+  height: 3.5rem;
+  transition: top 0.25s ease;
 `
 
 export default MobileHeader

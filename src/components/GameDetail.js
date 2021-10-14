@@ -121,12 +121,13 @@ const GameDetail = () => {
 const CardShadow = styled.div`
   width: 100%;
   min-height: 100vh;
-  overflow-y: scroll;
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
+  overflow-y: scroll;
+  overscroll-behavior-y: none;
   
   &::-webkit-scrollbar {
     width: 8px;
@@ -180,7 +181,6 @@ const Detail = styled.div`
   color: black;
   display: flex;
   justify-content: space-between;
-  overscroll-behavior-y: none;
 
   img {
     width: 100%;

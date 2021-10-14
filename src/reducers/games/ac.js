@@ -1,13 +1,20 @@
 import axios from "axios";
-import {dynamicSearchURL, newGamesURL, popularGamesURL, searchGameURL, upcomingGamesURL} from "../../api";
 import {
-    CHANGE_INPUT, FETCH_AUTOCOMPLETE_SEARCH,
+    autocompleteSearchURL,
+    newGamesURL,
+    popularGamesURL,
+    searchGameURL,
+    upcomingGamesURL
+} from "../../api";
+import {
+    RESET_SEARCHED,
     FETCH_NEWGAMES,
     FETCH_POPULAR,
     FETCH_SEARCHED,
+    FETCH_AUTOCOMPLETE_SEARCH,
     FETCH_UPCOMING,
     START,
-    SUCCESS
+    SUCCESS,
 } from "../../utils/constants";
 
 export const fetchUpcomingStart = () => ({
@@ -26,19 +33,13 @@ export const fetchSearchedStart = () => ({
     type: FETCH_SEARCHED + START
 })
 
-export const changeInput = (input) => {
-    return {
-        type: CHANGE_INPUT,
-        payload: {input},
-    }
-}
-
 export const fetchAutocompleteSearch = (game_name) => async (dispatch) => {
-    await axios.get(dynamicSearchURL(game_name))
+    await axios.get(autocompleteSearchURL(game_name))
         .then(response => dispatch({
             type: FETCH_AUTOCOMPLETE_SEARCH,
             payload: {
-                autocompleteSearch: response.data.results
+                autocompleteSearch: response.data.results,
+                autocompleteCount: response.data.count,
             }
         }))
 }
@@ -105,4 +106,11 @@ export const fetchSearched = (game_name, searchedCurrentPage) => async (dispatch
                 searchedCurrentPage: searchedCurrentPage + 1
             }
         }))
+}
+
+export const resetSearched = (input) => {
+    return {
+        type: RESET_SEARCHED,
+        payload: {input},
+    }
 }

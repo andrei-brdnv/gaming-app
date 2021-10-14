@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closeItem } from "../../reducers/ui/ac";
+import { closeAutocomplete, closeHeaderDropdown } from "../../reducers/ui/ac";
 import { debounce } from "../../utils/debounce";
 // Styles
 import styled from "styled-components";
@@ -14,7 +14,7 @@ const Header = () => {
     const dispatch = useDispatch()
     const [prevScrollPos, setPrevScrollPos] = useState(0)
     const [visible, setVisible] = useState(true)
-    const { open } = useSelector(store => store.ui)
+    const { isOpenDropdown, isOpenSearchAutocomplete } = useSelector(store => store.ui)
 
     const handleScroll = debounce(() => {
         // find current scroll position
@@ -25,7 +25,8 @@ const Header = () => {
         // set state to new scroll position
         setPrevScrollPos(currentScrollPos);
 
-        {open && dispatch(closeItem())}
+        {isOpenDropdown && dispatch(closeHeaderDropdown())}
+        {isOpenSearchAutocomplete && dispatch(closeAutocomplete())}
     }, 50);
 
     useEffect(() => {

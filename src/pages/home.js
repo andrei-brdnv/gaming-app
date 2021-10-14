@@ -13,7 +13,7 @@ import {
 } from "../reducers/games/ac";
 import styled from "styled-components";
 import Game from "../components/GameCard";
-import { useLocation } from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import GameDetail from "../components/GameDetail";
 import SimpleLoader from "../components/Loader";
 import { AppLangContext, Text } from "../context/AppLangProvider";
@@ -25,6 +25,7 @@ import FavouriteGames from "../components/FavouriteGames";
 
 const Home = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const { upcoming, totalPagesUpcoming, popular, totalPagesPopular, newGames, totalPagesNewGames, fetchingUpcoming, fetchingPopular, fetchingNewGames, searched, totalPagesSearched, fetchingSearched, firstLoading, gameSeries, loaded, upcomingCurrentPage, popularCurrentPage, newGamesCurrentPage, searchedCurrentPage } = useSelector(store => store.games)
     //const { upcoming, popular, newGames } = data.games
@@ -41,6 +42,12 @@ const Home = () => {
     const pathId = location.pathname.split('/')[2]
 
     const { dictionary } = useContext(AppLangContext)
+
+    if (history.location.pathname === '/') {
+        document.body.style.overflow = 'auto'
+    } else {
+        document.body.style.overflow = 'hidden'
+    }
 
     return (
         <GameList>

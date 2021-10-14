@@ -10,8 +10,10 @@ import Home from "./pages/home";
 import SignIn from "./pages/signIn";
 import SignUp from "./pages/signUp";
 import MobileHeader from "./components/header/MobileHeader";
+import {useSelector} from "react-redux";
 
 const App = () => {
+    const { isOpenMobileSearchInput } = useSelector(store => store.ui)
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
 
     return (
@@ -26,7 +28,7 @@ const App = () => {
 
                 <div>
                     {isMobile ? <MobileHeader /> : <Header />}
-                    <ContentWrapper>
+                    <ContentWrapper isOpen={isOpenMobileSearchInput}>
                         <SideMenu />
                         <Route path={['/game/:id', '/']} exact component={Home} />
                     </ContentWrapper>
@@ -42,9 +44,10 @@ const ContentWrapper = styled.div`
   max-width: 1920px;
   margin: 0 auto;
   padding: 7rem 2rem;
+  transition: padding-top 0.25s ease;
 
   @media screen and (max-width: 768px) {
-    padding: 5.5rem 1rem;
+    padding: ${props => props.isOpen ? "9rem" : "5.5rem"} 1rem 5.5rem 1rem;
   }
 `
 

@@ -1,15 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleOpen } from "../../reducers/ui/ac";
+import { toggleHeaderDropdown } from "../../reducers/ui/ac";
 // Styles
 import styled from "styled-components";
 
 const HeaderNavItem = (props) => {
     const dispatch = useDispatch()
-    const { open } = useSelector(store => store.ui)
+    const { isOpenDropdown } = useSelector(store => store.ui)
 
     const toggleDropdown = () => {
-        dispatch(toggleOpen())
+        dispatch(toggleHeaderDropdown())
     }
 
     return (
@@ -18,7 +18,7 @@ const HeaderNavItem = (props) => {
                 {props.icon}
             </IconButton>
 
-            {open && props.children}
+            {isOpenDropdown && props.children}
         </NavItem>
     );
 }

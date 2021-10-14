@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closeItem } from "../../reducers/ui/ac";
+import { closeHeaderDropdown } from "../../reducers/ui/ac";
 import useClickOutside from "../../utils/clickOutsideFunc";
 // Styles
 import styled from "styled-components";
@@ -12,15 +12,15 @@ import DropdownMenu from "./DropdownMenu";
 
 const HeaderNav = () => {
     const dispatch = useDispatch()
-    const { open } = useSelector(store => store.ui)
-    const dropdownButtonRef = useRef(null)
+    const { isOpenDropdown } = useSelector(store => store.ui)
+    const dropdownRef = useRef(null)
 
-    useClickOutside(dropdownButtonRef, () => {
-        open && dispatch(closeItem())
+    useClickOutside(dropdownRef, () => {
+        isOpenDropdown && dispatch(closeHeaderDropdown())
     })
 
     return (
-        <List ref={dropdownButtonRef}>
+        <List ref={dropdownRef}>
             <HeaderNavItem icon={<FontAwesomeIcon icon={faCaretDown}/>}>
                 <DropdownMenu />
             </HeaderNavItem>

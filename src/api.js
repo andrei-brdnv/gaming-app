@@ -37,6 +37,6 @@ export const newGamesURL = (newGamesCurrentPage) => `${base_url}games?key=${API_
 export const gameDetailURL = (game_id) => `${base_url}games/${game_id}?key=${API_KEY}`;
 export const gameScreenshotURL = (game_id) => `${base_url}games/${game_id}/screenshots?key=${API_KEY}`;
 export const searchGameURL = (game_name, searchedCurrentPage) => `${base_url}games?key=${API_KEY}&search=${game_name}&page_size=${pageSize}&page=${searchedCurrentPage}`;
-export const dynamicSearchURL = (game_name) => `${base_url}games?key=${API_KEY}&search=${game_name}&page_size=${pageSize}`
+export const autocompleteSearchURL = (game_name) => `${base_url}games?key=${API_KEY}&search=${game_name}&page_size=${pageSize}`
 export const gameMovieURL = (game_id) => `${base_url}games/${game_id}/movies?key=${API_KEY}`;
 export const gameSeriesURL = (game_id) => `${base_url}games/${game_id}/game-series?key=${API_KEY}`;

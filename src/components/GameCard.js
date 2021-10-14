@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { fetchGameDetail } from "../reducers/detail/ac";
 import { smallImage } from "../utils/mediaResize";
 import getPlatformLogo from "../utils/getPlatformLogo";
@@ -13,17 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const GameCard = ({ name, released, image, id, platforms, genres, rating, metacritic }) => {
     const dispatch = useDispatch()
-    const history = useHistory()
     const { game } = useSelector(store => store.detail)
     let prev = usePrevious(game.id)
-
-    if (history.location.pathname === '/') {
-        document.body.style.overflow = 'auto'
-        //document.body.style.marginRight = '0'
-    } else {
-        document.body.style.overflow = 'hidden'
-        //document.body.style.marginRight = '8px'
-    }
 
     const showPlatformLogo = useMemo(() => {
         return platforms.map(data => (
