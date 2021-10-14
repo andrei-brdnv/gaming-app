@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { loadDetail } from "../actions";
+import { fetchGameDetail } from "../reducers/detail/ac";
 import { smallImage } from "../utils/mediaResize";
 import getPlatformLogo from "../utils/getPlatformLogo";
 import metacriticBorderStyle from "../utils/metacriticBorderStyle";
@@ -37,7 +37,7 @@ const GameCard = ({ name, released, image, id, platforms, genres, rating, metacr
 
     const loadDetailHandler = () => {
         if (id !== prev) {
-            dispatch(loadDetail(id))
+            dispatch(fetchGameDetail(id))
         }
     }
 

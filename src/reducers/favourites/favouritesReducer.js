@@ -5,7 +5,7 @@ import {
     START,
     SUCCESS,
     FAIL
-} from "../utils/constants";
+} from "../../utils/constants";
 
 const initState = {
     list: [],

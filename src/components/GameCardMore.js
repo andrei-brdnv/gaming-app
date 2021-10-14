@@ -1,7 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addToFavourite, deleteFavourite, loadDetail } from "../actions";
+import { addToFavourite, deleteFavourite} from "../reducers/favourites/ac";
+import { fetchGameDetail } from "../reducers/detail/ac";
 // Styles
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,7 +22,7 @@ const GameCardMore = ({ released, genres, rating, id }) => {
     }
 
     const loadDetailHandler = () => {
-        dispatch(loadDetail(id))
+        dispatch(fetchGameDetail(id))
     }
 
     return (

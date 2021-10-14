@@ -1,10 +1,10 @@
-import {CLOSE, TOGGLE_OPEN} from "../utils/constants";
+import {CLOSE, TOGGLE_OPEN} from "../../utils/constants";
 
-const initState = {
+const initialState = {
     open: false
 }
 
-const uiReducer = (state = initState, action) => {
+const uiReducer = (state = initialState, action) => {
     const { type, payload } = action
 
     switch (type) {
@@ -19,7 +19,7 @@ const uiReducer = (state = initState, action) => {
                 open: false
             }
         default:
-            return {...state}
+            return state
     }
 }
 

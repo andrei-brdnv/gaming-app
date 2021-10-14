@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { signIn } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "react-hook-form";
 import { Link, Redirect } from "react-router-dom";
-import User from "../images/profile-user.png";
+import { signIn } from "../reducers/auth/ac";
+import { useForm } from "react-hook-form";
 // Styles
+import styled from "styled-components";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faExclamation, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { motion } from "framer-motion";
+import User from "../images/profile-user.png";
 
 const SignIn = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -18,9 +18,9 @@ const SignIn = () => {
 
     const dispatch = useDispatch()
 
-    const { authError } = useSelector((store => store.auth))
+    const { authError } = useSelector(store => store.auth)
 
-    const { auth } = useSelector((store => store.firebase))
+    const { auth } = useSelector(store => store.firebase)
 
 
     const onSubmit = (data) => {

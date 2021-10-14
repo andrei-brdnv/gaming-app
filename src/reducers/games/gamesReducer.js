@@ -5,10 +5,12 @@ import {
     START,
     SUCCESS,
     FETCH_POPULAR,
-    FETCH_NEWGAMES, CHANGE_INPUT, FETCH_DYNAMIC_SEARCH
-} from "../utils/constants";
+    FETCH_NEWGAMES,
+    CHANGE_INPUT,
+    FETCH_AUTOCOMPLETE_SEARCH
+} from "../../utils/constants";
 
-const initState = {
+const initialState = {
     upcoming: [],
     fetchingUpcoming: true,
     totalPagesUpcoming: 0,
@@ -30,7 +32,7 @@ const initState = {
     totalPagesSearched: 0,
     searchedCurrentPage: 1,
 
-    dynamicSearched: [],
+    autocompleteSearch: [],
 
     gameSeries: [],
     fetchingGameSeries: false,
@@ -38,7 +40,7 @@ const initState = {
     loaded: false,
 }
 
-const gamesReducer = (state = initState, action) => {
+const gamesReducer = (state = initialState, action) => {
     const { type, payload } = action
 
     switch (type) {
@@ -93,10 +95,10 @@ const gamesReducer = (state = initState, action) => {
                 totalPagesSearched: 0,
                 searchedCurrentPage: 1,
             }
-        case FETCH_DYNAMIC_SEARCH:
+        case FETCH_AUTOCOMPLETE_SEARCH:
             return {
                 ...state,
-                dynamicSearched: payload.dynamicSearched
+                autocompleteSearch: payload.autocompleteSearch
             }
         case FETCH_SEARCHED + START:
             return {

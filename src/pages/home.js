@@ -1,39 +1,22 @@
 import React, {useEffect, useContext, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchFavourites } from "../reducers/favourites/ac";
 import {
-    fetchFavourites,
-    fetchNewGames,
-    fetchPopular,
     fetchUpcoming,
-    loadGames,
-    showLoader,
-    addToFavourite,
-    deleteFavourite,
     fetchUpcomingStart,
+    fetchPopular,
     fetchPopularStart,
-    fetchNewGamesStart, fetchSearched, fetchSearchedStart
-} from "../actions";
+    fetchNewGames,
+    fetchNewGamesStart,
+    fetchSearched,
+    fetchSearchedStart
+} from "../reducers/games/ac";
 import styled from "styled-components";
 import Game from "../components/GameCard";
 import { useLocation } from "react-router-dom";
 import GameDetail from "../components/GameDetail";
 import SimpleLoader from "../components/Loader";
 import { AppLangContext, Text } from "../context/AppLangProvider";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import {
-    CLEAR_GAMESERIES,
-    CLEAR_SEARCHED,
-    FETCH_NEWGAMES,
-    FETCH_POPULAR,
-    FETCH_UPCOMING,
-    START
-} from "../utils/constants";
-
-import { motion, AnimatePresence } from "framer-motion";
-import Skeleton from "../components/Skeleton";
-
 import Section from "../components/Section";
 
 import data from '../utils/mockedstate'

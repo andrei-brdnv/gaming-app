@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import {signUp} from "../actions";
-import {useDispatch, useSelector} from "react-redux";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExclamation, faTimes} from "@fortawesome/free-solid-svg-icons";
-import {Link, Redirect} from "react-router-dom";
+import { signUp } from "../reducers/auth/ac";
 // Styles
+import styled from "styled-components";
 import { motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamation, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();

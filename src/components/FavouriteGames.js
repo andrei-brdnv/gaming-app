@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Text } from "../context/AppLangProvider";
 // Styles
-import {Games, SectionContainer} from "./Section";
+import { Games, SectionContainer } from "./Section";
 // Components
 import GameCard from "./GameCard";
 

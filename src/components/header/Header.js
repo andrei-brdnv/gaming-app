@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closeItem } from "../../actions";
+import { closeItem } from "../../reducers/ui/ac";
 import { debounce } from "../../utils/debounce";
 // Styles
 import styled from "styled-components";

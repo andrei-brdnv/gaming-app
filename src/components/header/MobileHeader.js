@@ -3,7 +3,7 @@ import { debounce } from "../../utils/debounce";
 // Styles
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDove, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faDove } from "@fortawesome/free-solid-svg-icons";
 import { ReactComponent as SearchIcon } from "../../images/search.svg";
 // Components
 import HeaderSearch from "./HeaderSearch";

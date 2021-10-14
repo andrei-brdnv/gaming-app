@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { signOut, closeItem } from "../../actions";
+import { closeItem } from "../../reducers/ui/ac";
+import { signOut } from "../../reducers/auth/ac";
 import { AppThemeContext } from "../../context/AppThemeProvider";
 import { AppLangContext } from "../../context/AppLangProvider";
 // Styles
@@ -22,13 +23,11 @@ const DropdownMenu = () => {
 
     useEffect(() => {
         setMenuHeight(dropdownRef.current?.firstChild.offsetHeight)
-        console.log("DDREF", dropdownRef)
     }, [])
 
     const calcHeight = (el) => {
         const height = el.offsetHeight;
         setMenuHeight(height);
-        console.log("DDREF", dropdownRef)
     }
 
     const handleThemeChange = (e) => {

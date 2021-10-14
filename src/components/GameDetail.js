@@ -1,10 +1,10 @@
-import React, {useMemo, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { addToFavourite, deleteFavourite } from "../reducers/favourites/ac";
 import getStarsRating from "../utils/getStarsRating";
 import getPlatformLogo from "../utils/getPlatformLogo";
 import moment from "moment";
-import metacriticBorder from "../utils/metacriticBorderStyle";
 import ReactHtmlParser from "react-html-parser";
 // Styles
 import styled from "styled-components";
@@ -15,14 +15,13 @@ import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 // Components
 import GameMeta from "./GameMeta";
 import ImagesLightbox from "./ImagesLightbox";
-import {addToFavourite, deleteFavourite} from "../actions";
 
 const GameDetail = () => {
     const [fullDesc, setFullDesc] = useState(false)
     const dispatch = useDispatch()
     const { auth } = useSelector(store => store.firebase)
     const { list } = useSelector(store => store.favourites)
-    const { game, screenshot, fetchingDetail, movie } = useSelector(store => store.detail)
+    const { game, screenshot, fetchingDetail } = useSelector(store => store.detail)
     const history = useHistory()
 
     const exitDetailHandler = (e) => {

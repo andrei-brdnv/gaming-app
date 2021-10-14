@@ -1,20 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeInput, fetchSearched, fetchDynamicSearch } from "../../actions";
+import { Link } from "react-router-dom";
+import { fetchAutocompleteSearch } from "../../reducers/games/ac";
+import { fetchSearched, changeInput } from "../../reducers/games/ac";
+import { fetchGameDetail } from "../../reducers/detail/ac";
 import { useMediaQuery } from "react-responsive";
+import usePrevious from "../../utils/usePrevious";
 // Styles
 import styled from "styled-components";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { motion, AnimateSharedLayout } from "framer-motion";
-import {logger} from "redux-logger/src";
 
 const HeaderSearch = () => {
     const dispatch = useDispatch()
     const [input, setInput] = useState('')
     const inputRef = useRef(null)
     const [focus, setFocus] = useState(false)
-    let { searched, searchedCurrentPage, dynamicSearched } = useSelector(store => store.games)
+    let { searched, searchedCurrentPage, autocompleteSearch } = useSelector(store => store.games)
+    const { game } = useSelector(store => store.detail)
+    let prev = usePrevious(game.id)
+
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
     const handleInput = (e) => {
@@ -38,7 +44,7 @@ const HeaderSearch = () => {
 
     useEffect(() => {
         if (input) {
-            dispatch(fetchDynamicSearch(input))
+            dispatch(fetchAutocompleteSearch(input))
         }
     }, [input])
 
@@ -52,6 +58,12 @@ const HeaderSearch = () => {
             })
         }
     }, [searched.length])
+
+    const loadDetailHandler = (id) => {
+        if (id !== prev) {
+            dispatch(fetchGameDetail(id))
+        }
+    }
 
     return (
         <>
@@ -69,8 +81,12 @@ const HeaderSearch = () => {
 
                 {input ? (
                     <SearchedList>
-                        {dynamicSearched && dynamicSearched.map(game => (
-                            <li key={game.id}>{game.name}</li>
+                        {autocompleteSearch && autocompleteSearch.map(game => (
+                            <li key={game.id}>
+                                <Link to={`/game/${game.id}`} onClick={() => loadDetailHandler(game.id)}>
+                                    {game.name}
+                                </Link>
+                            </li>
                         ))}
                     </SearchedList>
                 ) : null}

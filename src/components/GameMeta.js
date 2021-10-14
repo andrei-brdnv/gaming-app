@@ -1,8 +1,9 @@
-import React, {useMemo} from "react";
-import styled from "styled-components";
-import {Link} from "react-router-dom";
+import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import metacriticBorder from "../utils/metacriticBorderStyle";
+// Styles
+import styled from "styled-components";
 
 const GameMeta = ({ array, name, width, data, getStarsRating }) => {
     const showMetacriticBorder = useMemo(() => {

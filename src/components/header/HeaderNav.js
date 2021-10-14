@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closeItem } from "../../actions";
+import { closeItem } from "../../reducers/ui/ac";
 import useClickOutside from "../../utils/clickOutsideFunc";
 // Styles
 import styled from "styled-components";
@@ -16,7 +16,7 @@ const HeaderNav = () => {
     const dropdownButtonRef = useRef(null)
 
     useClickOutside(dropdownButtonRef, () => {
-        dispatch(closeItem())
+        open && dispatch(closeItem())
     })
 
     return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleOpen } from "../../actions";
+import { toggleOpen } from "../../reducers/ui/ac";
 // Styles
 import styled from "styled-components";
 

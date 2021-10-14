@@ -1,11 +1,10 @@
 import { combineReducers } from "redux";
-import gamesReducer from "./gamesReducer";
-import detailReducer from "./detailReducer";
+import gamesReducer from "./games/gamesReducer";
+import detailReducer from "./detail/detailReducer";
 import { firebaseReducer } from "react-redux-firebase";
-import authReducer from "./authReducer";
-import favouritesReducer from "./favouritesReducer"
-import uiReducer from "./uiReducer";
-
+import authReducer from "./auth/authReducer";
+import favouritesReducer from "./favourites/favouritesReducer"
+import uiReducer from "./ui/uiReducer";
 
 const rootReducer = combineReducers({
     games: gamesReducer,
